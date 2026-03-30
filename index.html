@@ -234,6 +234,52 @@
   height: 24px;
   background: #3a2005;
 }
+
+.bill-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px 16px 0;
+}
+
+.reset-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 1.5px solid #c0401a;
+  color: #c0401a;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  font-family: var(--font-sans);
+  letter-spacing: 0.5px;
+}
+.reset-btn:hover {
+  background: #c0401a;
+  color: #fff8e0;
+}
+.reset-btn:active {
+  transform: scale(0.97);
+}
+.reset-btn svg {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .reset-btn {
+    font-size: 14px;
+    padding: 8px 18px;
+  }
+  .reset-btn svg {
+    width: 15px;
+    height: 15px;
+  }
+}
 /* 📱 MOBILE VIEW IMPROVEMENT */
 @media (max-width: 768px) {
 
@@ -473,6 +519,16 @@
       </div>
     </div>
 
+    <div class="bill-actions">
+      <button class="reset-btn" onclick="resetBill()">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2.5 8a5.5 5.5 0 1 1 1.1 3.3"/>
+          <polyline points="2.5,11.5 2.5,8 6,8"/>
+        </svg>
+        Reset Bill
+      </button>
+    </div>
+
     <div class="bill-body">
       <div class="bill-cols">
         <span>Item</span>
@@ -521,6 +577,11 @@
 
 <script>
 const billItems = {};
+
+function resetBill() {
+  Object.keys(billItems).forEach(k => delete billItems[k]);
+  renderBill();
+}
 
 function addToBill(name, price) {
   if (billItems[name]) { billItems[name].qty++; }
