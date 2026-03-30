@@ -1,0 +1,483 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .wrapper {
+    display: flex;
+    gap: 0;
+    font-family: var(--font-sans);
+    background: transparent;
+    min-height: 700px;
+  }
+
+  .menu-board {
+    flex: 1.4;
+    background: #1a0a00;
+    background-image:
+      radial-gradient(ellipse at 20% 10%, #3d1a00 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 80%, #2a0d00 0%, transparent 55%);
+    border-radius: 16px 0 0 16px;
+    overflow: hidden;
+    position: relative;
+    padding: 0 0 20px 0;
+  }
+
+  .menu-header {
+    background: linear-gradient(135deg, #c2440c 0%, #e05a10 40%, #c2440c 100%);
+    padding: 22px 24px 16px;
+    text-align: center;
+    position: relative;
+    border-bottom: 3px solid #f0a040;
+  }
+  .menu-header::before, .menu-header::after {
+    content: '✦';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #f5c842;
+    opacity: 0.85;
+  }
+  .menu-header::before { left: 20px; }
+  .menu-header::after  { right: 20px; }
+
+  .rest-name {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff8e0;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+    line-height: 1.1;
+  }
+  .rest-tagline {
+    font-size: 11px;
+    color: #f5d080;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 4px;
+    opacity: 0.9;
+  }
+  .rest-divider {
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #f5c842, transparent);
+    margin: 8px auto 0;
+  }
+
+  .menu-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    padding: 10px 0;
+  }
+
+  .menu-section { padding: 14px 18px 6px; }
+
+  .section-title {
+    font-size: 10px;
+    font-weight: 500;
+    color: #f0a040;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::before, .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #c06020);
+  }
+
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 4px;
+    border-bottom: 1px dotted rgba(255,160,60,0.18);
+    cursor: pointer;
+    transition: background 0.15s;
+    border-radius: 4px;
+  }
+  .menu-item:hover { background: rgba(255,160,60,0.08); }
+  .menu-item:last-child { border-bottom: none; }
+
+  .item-icon {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; flex-shrink: 0;
+  }
+  .icon-rice    { background: rgba(200,100,20,0.3); }
+  .icon-bread   { background: rgba(220,180,40,0.25); }
+  .icon-starter { background: rgba(220,50,30,0.3); }
+  .icon-noodle  { background: rgba(80,180,100,0.25); }
+  .icon-egg     { background: rgba(255,200,40,0.25); }
+  .icon-meal    { background: rgba(100,160,60,0.25); }
+
+  .item-name  { flex: 1; font-size: 12.5px; color: #f5e8cc; font-weight: 400; line-height: 1.3; }
+  .item-price { font-size: 12.5px; color: #f5c842; font-weight: 500; white-space: nowrap; margin-left: 4px; }
+  .price-sym  { font-size: 10px; color: #d4a830; margin-right: 1px; }
+
+  .menu-footer {
+    text-align: center;
+    padding: 12px 20px 4px;
+    border-top: 1px solid rgba(255,160,60,0.2);
+    margin: 6px 16px 0;
+  }
+  .menu-footer p { font-size: 10px; color: rgba(200,160,80,0.6); letter-spacing: 1px; }
+
+  /* BILL */
+  .bill-panel {
+    flex: 1;
+    background: #fdf6e3;
+    border-radius: 0 16px 16px 0;
+    display: flex;
+    flex-direction: column;
+    border-left: 3px dashed #d4a030;
+    overflow: hidden;
+  }
+
+  .bill-header {
+    background: #2a0d00;
+    padding: 20px 18px 14px;
+    text-align: center;
+  }
+  .bill-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: #f5d880;
+    letter-spacing: 1px;
+  }
+  .bill-sub { font-size: 10px; color: rgba(245,180,80,0.6); letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
+  .bill-meta {
+    font-size: 10px; color: rgba(245,200,120,0.7);
+    margin-top: 8px; display: flex; justify-content: space-between; gap: 8px;
+  }
+
+  .bill-body { padding: 12px 16px; flex: 1; }
+
+  .bill-cols {
+    display: grid;
+    grid-template-columns: 1fr 36px 56px 60px;
+    gap: 0 4px;
+    font-size: 10px; color: #7a5a30; font-weight: 500;
+    letter-spacing: 1px; text-transform: uppercase;
+    border-bottom: 2px solid #d4a030;
+    padding-bottom: 6px; margin-bottom: 4px;
+  }
+  .bill-cols span:not(:first-child) { text-align: right; }
+
+  .bill-row {
+    display: grid;
+    grid-template-columns: 1fr 36px 56px 60px;
+    gap: 0 4px;
+    padding: 5px 0;
+    border-bottom: 1px dotted rgba(180,120,40,0.25);
+    align-items: center;
+    border-radius: 3px;
+    transition: background 0.12s;
+  }
+  .bill-row:hover { background: rgba(210,140,30,0.08); }
+
+  .b-name  { font-size: 11.5px; color: #3a2005; }
+  .b-qty   { font-size: 12px; color: #7a5a30; text-align: right; font-weight: 500; }
+  .b-unit  { font-size: 11px; color: #5a4020; text-align: right; }
+  .b-total { font-size: 11.5px; color: #1a0a00; text-align: right; font-weight: 500; }
+
+  .bill-subtotals { margin-top: 10px; border-top: 1px dashed #c09030; padding-top: 8px; }
+  .subtotal-row { display: flex; justify-content: space-between; font-size: 11px; color: #5a4020; padding: 3px 0; }
+  .subtotal-row.gst { color: #7a5a30; }
+  .total-row {
+    display: flex; justify-content: space-between;
+    font-size: 15px; font-weight: 500; color: #1a0a00;
+    border-top: 2px solid #1a0a00;
+    margin-top: 6px; padding-top: 8px;
+  }
+
+  .bill-footer { padding: 12px 16px; border-top: 1px dashed #c09030; text-align: center; }
+  .thank-you { font-family: 'Playfair Display', Georgia, serif; font-size: 13px; color: #8a5a10; letter-spacing: 1px; }
+  .bill-footer p { font-size: 9px; color: #b08040; margin-top: 3px; letter-spacing: 0.5px; }
+
+  .tear-line {
+    width: 100%; height: 1px;
+    background: repeating-linear-gradient(to right, #c09030 0, #c09030 6px, transparent 6px, transparent 12px);
+    margin: 6px 0; opacity: 0.5;
+  }
+
+  .barcode { display: flex; justify-content: center; margin-top: 8px; gap: 1px; opacity: 0.35; }
+  .barcode span { display: inline-block; height: 24px; background: #3a2005; border-radius: 0.5px; }
+</style>
+
+<div class="wrapper">
+
+  <!-- MENU BOARD -->
+  <div class="menu-board">
+    <div class="menu-header">
+      <div class="rest-name">Jyothis</div>
+      <div class="rest-tagline">Family Restaurant</div>
+      <div class="rest-divider"></div>
+    </div>
+
+    <div class="menu-cols">
+      <!-- LEFT -->
+      <div>
+        <div class="menu-section">
+          <div class="section-title">Biryani</div>
+          <div class="menu-item" onclick="addToBill('Chicken Biryani',120)">
+            <div class="item-icon icon-rice">🍛</div>
+            <span class="item-name">Chicken Biryani</span>
+            <span class="item-price"><span class="price-sym">₹</span>120</span>
+          </div>
+          <div class="menu-item" onclick="addToBill('Mutton Biryani',150)">
+            <div class="item-icon icon-rice">🍛</div>
+            <span class="item-name">Mutton Biryani</span>
+            <span class="item-price"><span class="price-sym">₹</span>150</span>
+          </div>
+          <div class="menu-item" onclick="addToBill('Mutton Biryani Special',100)">
+            <div class="item-icon icon-rice">🍛</div>
+            <span class="item-name">Mutton Biryani Special</span>
+            <span class="item-price"><span class="price-sym">₹</span>100</span>
+          </div>
+        </div>
+
+        <div class="menu-section">
+          <div class="section-title">Breads</div>
+          <div class="menu-item" onclick="addToBill('Parota',20)">
+            <div class="item-icon icon-bread">🫓</div>
+            <span class="item-name">Parota</span>
+            <span class="item-price"><span class="price-sym">₹</span>20</span>
+          </div>
+          <div class="menu-item" onclick="addToBill('Chappati',20)">
+            <div class="item-icon icon-bread">🫓</div>
+            <span class="item-name">Chappati</span>
+            <span class="item-price"><span class="price-sym">₹</span>20</span>
+          </div>
+          <div class="menu-item" onclick="addToBill('Dosa',60)">
+            <div class="item-icon icon-bread">🥞</div>
+            <span class="item-name">Dosa</span>
+            <span class="item-price"><span class="price-sym">₹</span>60</span>
+          </div>
+        </div>
+
+        <div class="menu-section">
+          <div class="section-title">Egg Items</div>
+          <div class="menu-item" onclick="addToBill('Boiled Egg',20)">
+            <div class="item-icon icon-egg">🥚</div>
+            <span class="item-name">Boiled Egg</span>
+            <span class="item-price"><span class="price-sym">₹</span>20</span>
+          </div>
+          <div class="menu-item" onclick="addToBill('Omelette',20)">
+            <div class="item-icon icon-egg">🍳</div>
+            <span class="item-name">Omelette</span>
+            <span class="item-price"><span class="price-sym">₹</span>20</span>
+          </div>
+        </div>
+
+        <div class="menu-section">
+          <div class="section-title">Meals</div>
+          <div class="menu-item" onclick="addToBill('Meals',100)">
+            <div class="item-icon icon-meal">🍽️</div>
+            <span class="item-name">Meals (Full)</span>
+            <span class="item-price"><span class="price-sym">₹</span>100</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div>
+        <div class="menu-section">
+          <div class="section-title">Starters</div>
+          <div class="menu-item" onclick="addToBill('Chicken Lollipop',150)">
+            <div class="item-icon icon-starter">🍗</div>
+            <span class="item-name">Chicken Lollipop</span>
+            <span class="item-price"><span class="price-sym">₹</span>150</span>
+          </div>
+          <div class="menu-item" onclick="addToBill('Chicken 65',150)">
+            <div class="item-icon icon-starter">🍗</div>
+            <span class="item-name">Chicken 65</span>
+            <span class="item-price"><span class="price-sym">₹</span>150</span>
+          </div>
+          <div class="menu-item" onclick="addToBill('Kadai Fry',150)">
+            <div class="item-icon icon-starter">🍗</div>
+            <span class="item-name">Kadai Fry</span>
+            <span class="item-price"><span class="price-sym">₹</span>150</span>
+          </div>
+          <div class="menu-item" onclick="addToBill('Kalaki Fry',150)">
+            <div class="item-icon icon-starter">🍗</div>
+            <span class="item-name">Kalaki Fry</span>
+            <span class="item-price"><span class="price-sym">₹</span>150</span>
+          </div>
+        </div>
+
+        <div class="menu-section">
+          <div class="section-title">Fried Rice</div>
+          <div class="menu-item" onclick="addToBill('Fried Rice Chicken',100)">
+            <div class="item-icon icon-rice">🍚</div>
+            <span class="item-name">Fried Rice (Chicken)</span>
+            <span class="item-price"><span class="price-sym">₹</span>100</span>
+          </div>
+          <div class="menu-item" onclick="addToBill('Fried Rice Egg',90)">
+            <div class="item-icon icon-rice">🍚</div>
+            <span class="item-name">Fried Rice (Egg)</span>
+            <span class="item-price"><span class="price-sym">₹</span>90</span>
+          </div>
+          <div class="menu-item" onclick="addToBill('Fried Rice Veg',80)">
+            <div class="item-icon icon-rice">🍚</div>
+            <span class="item-name">Fried Rice (Veg)</span>
+            <span class="item-price"><span class="price-sym">₹</span>80</span>
+          </div>
+        </div>
+
+        <div class="menu-section">
+          <div class="section-title">Noodles</div>
+          <div class="menu-item" onclick="addToBill('Noodles Chicken',100)">
+            <div class="item-icon icon-noodle">🍜</div>
+            <span class="item-name">Noodles (Chicken)</span>
+            <span class="item-price"><span class="price-sym">₹</span>100</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-footer">
+      <p>✦ All prices inclusive of taxes &nbsp;·&nbsp; Dine-in &amp; Takeaway ✦</p>
+    </div>
+  </div>
+
+  <!-- BILL PANEL -->
+  <div class="bill-panel">
+    <div class="bill-header">
+      <div class="bill-title">Jyothis Family Restaurant</div>
+      <div class="bill-sub">Tax Invoice / Receipt</div>
+      <div class="bill-meta">
+        <span>Bill No: #JF-2847</span>
+        <span>Table: 04</span>
+        <span id="bill-date"></span>
+      </div>
+    </div>
+
+    <div class="bill-body">
+      <div class="bill-cols">
+        <span>Item</span>
+        <span>Qty</span>
+        <span>Rate</span>
+        <span>Amount</span>
+      </div>
+      <div id="bill-rows"></div>
+      <div id="bill-empty" style="font-size:11px;color:#b08040;text-align:center;padding:18px 0;opacity:0.7;">
+        Click any menu item to add ↑
+      </div>
+    </div>
+
+    <div style="padding: 0 16px;">
+      <div class="tear-line"></div>
+      <div class="bill-subtotals">
+        <div class="subtotal-row">
+          <span>Sub Total</span>
+          <span>₹ <span id="subtotal">0.00</span></span>
+        </div>
+        <div class="subtotal-row gst">
+          <span>GST (5%)</span>
+          <span>₹ <span id="gst">0.00</span></span>
+        </div>
+        <div class="subtotal-row" style="font-size:10px;color:#a08050;">
+          <span>Rounding</span>
+          <span>₹ <span id="rounding">0.00</span></span>
+        </div>
+        <div class="total-row">
+          <span>Grand Total</span>
+          <span>₹ <span id="grand-total">0.00</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bill-footer">
+      <div class="tear-line" style="margin-bottom:10px;"></div>
+      <div class="thank-you">Thank You, Visit Again!</div>
+      <p>Jyothis Family Restaurant · Ph: 98765 43210</p>
+      <p style="margin-top:2px;font-size:8px;color:#c09040;opacity:0.7;">Powered by POS v2.1 · FSSAI: 12345678901234</p>
+      <div class="barcode" id="barcode"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const billItems = {};
+
+function addToBill(name, price) {
+  if (billItems[name]) { billItems[name].qty++; }
+  else { billItems[name] = { price, qty: 1 }; }
+  renderBill();
+}
+
+function changeQty(name, delta) {
+  if (!billItems[name]) return;
+  billItems[name].qty += delta;
+  if (billItems[name].qty <= 0) delete billItems[name];
+  renderBill();
+}
+
+function renderBill() {
+  const container = document.getElementById('bill-rows');
+  const empty = document.getElementById('bill-empty');
+  const keys = Object.keys(billItems);
+  container.innerHTML = '';
+  empty.style.display = keys.length === 0 ? 'block' : 'none';
+
+  let sub = 0;
+  keys.forEach(name => {
+    const { price, qty } = billItems[name];
+    const total = price * qty;
+    sub += total;
+    const row = document.createElement('div');
+    row.className = 'bill-row';
+    row.innerHTML = `
+      <span class="b-name">${name}</span>
+      <span class="b-qty" style="display:flex;align-items:center;justify-content:flex-end;gap:2px;">
+        <button onclick="changeQty('${name}',-1)" style="background:none;border:none;color:#c07020;font-size:13px;cursor:pointer;padding:0 2px;line-height:1">−</button>
+        ${qty}
+        <button onclick="changeQty('${name}',1)" style="background:none;border:none;color:#c07020;font-size:13px;cursor:pointer;padding:0 2px;line-height:1">+</button>
+      </span>
+      <span class="b-unit">₹${price}</span>
+      <span class="b-total">₹${total}</span>`;
+    container.appendChild(row);
+  });
+
+  const gst = sub * 0.05;
+  const rawTotal = sub + gst;
+  const rounded = Math.round(rawTotal);
+  const rounding = +(rounded - rawTotal).toFixed(2);
+
+  document.getElementById('subtotal').textContent = sub.toFixed(2);
+  document.getElementById('gst').textContent = gst.toFixed(2);
+  document.getElementById('rounding').textContent = (rounding >= 0 ? '+' : '') + rounding.toFixed(2);
+  document.getElementById('grand-total').textContent = rounded.toFixed(2);
+}
+
+// Default sample order
+const seed = {'Chicken Biryani':120,'Chicken 65':150,'Parota':20,'Boiled Egg':20};
+['Chicken Biryani','Chicken 65','Parota','Parota','Parota','Boiled Egg'].forEach(n => {
+  if (!billItems[n]) billItems[n] = {price: seed[n], qty: 0};
+  billItems[n].qty++;
+});
+renderBill();
+
+// Date
+const now = new Date();
+document.getElementById('bill-date').textContent = now.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+
+// Barcode
+const bc = document.getElementById('barcode');
+[2,1,3,1,2,1,1,2,3,1,2,1,3,2,1,1,2,1,3,2,1,2,1,3,1,2,1,1].forEach(w => {
+  const s = document.createElement('span');
+  s.style.width = w + 'px';
+  bc.appendChild(s);
+});
+</script>
